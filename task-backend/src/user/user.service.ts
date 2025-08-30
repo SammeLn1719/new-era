@@ -99,7 +99,11 @@ export class UserService {
 
     return this.prisma.user.update({
       where: { id },
-      data
+      data,
+      select: {
+        email: true,
+        name: true,
+      }
     });
 
   }
