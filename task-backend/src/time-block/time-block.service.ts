@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { hash } from 'argon2';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -39,6 +39,18 @@ export class TimeBlockService {
 		timeBlockId: string,
 		userId: string
 	) {
+		// Сначала проверяем, существует ли TimeBlock
+		const timeBlock = await this.prisma.timeBlock.findFirst({
+			where: {
+				id: timeBlockId,
+				userId
+			}
+		});
+
+		if (!timeBlock) {
+			throw new NotFoundException('TimeBlock not found');
+		}
+
 		return this.prisma.timeBlock.update({
 			where: {
 				userId,
@@ -49,6 +61,18 @@ export class TimeBlockService {
 	}
 
 	async delete(timeBlockId: string, userId: string) {
+		// Сначала проверяем, существует ли TimeBlock
+		const timeBlock = await this.prisma.timeBlock.findFirst({
+			where: {
+				id: timeBlockId,
+				userId
+			}
+		});
+
+		if (!timeBlock) {
+			throw new NotFoundException('TimeBlock not found');
+		}
+
 		return this.prisma.timeBlock.delete({
 			where: {
 				id: timeBlockId,
