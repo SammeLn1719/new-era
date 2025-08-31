@@ -1,17 +1,18 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UsePipes, HttpCode, Put, ValidationPipe } from '@nestjs/common';
-import { TaskService } from './pomodoro.service';
+import { PomodoroService } from './pomodoro.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
-import { PomodoroDto, PomodoroRoundDto } from './dto/pomodoroRound.dto';
+import { PomodoroRoundDto } from './dto/pomodoroRound.dto';
+import { PomodoroSessionDto } from './dto/pomodoroSession.dto';
 
-@Controller('user/timers/')
+@Controller('user/timer/')
 export class PomodoroController {
   constructor(private readonly pomodoroService: PomodoroService) {}
 
   @Get('today')
   @Auth()
   async getTodaySessions(@CurrentUser('id') userId: string) {
-    return this.pomodoroService.getTodaySessions(userId)
+    return this.pomodoroService.getTodaySession(userId)
   }
 
   @HttpCode(200)
@@ -38,7 +39,7 @@ export class PomodoroController {
   @Auth()
   async update(
     @Param('id') id: string,
-    @Body() dto: PomodoroDto,
+    @Body() dto: PomodoroSessionDto,
     @CurrentUser('id') userId: string) {
     return this.pomodoroService.update(dto, id, userId)
   }
@@ -47,6 +48,6 @@ export class PomodoroController {
   @Delete(':id')
   @Auth()
   async delete(@Param('id') id: string, @CurrentUser('id') userId: string) {
-    return this.pomodoroService.delete(id, userId)
+    return this.pomodoroService.deleteSession(id, userId)
   }
 }

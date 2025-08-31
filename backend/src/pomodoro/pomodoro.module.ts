@@ -9,4 +9,4 @@ import { PomodoroService } from './pomodoro.service';
   providers: [PomodoroService, PrismaService],
   exports: [PomodoroService],
 })
-export class TaskModule {}
+export class PomodoroModule {}

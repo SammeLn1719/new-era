@@ -15,7 +15,7 @@ export class PomodoroSettingsDto {
     @IsOptional()
     @Min(1)
     @Max(10)
-    intervalsCount?: number;
+    intervalsCounter?: number;
 
 }
 
